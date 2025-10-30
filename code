@@ -1,0 +1,38 @@
+//Write a Java program to read a text file data.txt and display:
+//The total number of characters
+//The total number of words
+//The total number of lines
+//Store these results in another file named report.txt
+
+package exercise_g;
+import java.io.*;
+
+public class FileStatistics {
+    public static void main(String[] args) {
+        String inputFile = "paragraph.txt";
+        String outputFile = "report.txt";
+        int charCount = 0, wordCount = 0, lineCount = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lineCount++;
+                charCount += line.length();
+                String[] words = line.trim().split("\\s+");
+                if (!line.isEmpty()) wordCount += words.length;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e);
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))) {
+            bw.write("File Statistics Report\n");
+            bw.write("Total Characters: " + charCount + "\n");
+            bw.write("Total Words: " + wordCount + "\n");
+            bw.write("Total Lines: " + lineCount + "\n");
+            System.out.println("Report generated successfully in " + outputFile);
+        } catch (IOException e) {
+            System.out.println("Error writing report: " + e);
+        }
+    }
+}
